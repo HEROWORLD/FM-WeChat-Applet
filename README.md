@@ -13,7 +13,7 @@
 
 ### 项目采用小程序原生语法和组件，未采用其他的第三方框架，未使用小程序的Tabbar进行页面切换，大多数的业务逻辑均在page/player/player.js中完成，封装了一些基本的数据请求加载方法，提交用户数据需登录服务器验证token。
 
-### [服务器API文档](https://shimo.im/docs/K5p50BheJtsnvEic/) 
+### [服务端API文档](https://shimo.im/docs/K5p50BheJtsnvEic/) 
 
 #### 播放器组件的实现利用微信小程序API: wx.getBackgroundAudioManager()实现 [详情参考](https://developers.weixin.qq.com/miniprogram/dev/api/getBackgroundAudioManager.html)
 
