@@ -1,0 +1,165 @@
+<view class='nav-items'>
+  <block wx:for="{{['icon-list','icon-radio','icon-person']}}" wx:key="unique">
+    <view class='radio {{item}} nav-item {{currentIndex==index?"nav-active":""}}' bindtap='navigateToPlayList' data-index="{{index}}" bindtap='navItemsChange'>
+      <view></view>
+    </view>
+  </block>
+</view>
+
+<swiper style="{{screenHeight?'height:1120rpx':'height:1070rpx'}}" current="{{currentIndex}}" bindchange='changeSwiper' class='content'>
+  <swiper-item>
+    <!-- 播放列表 -->
+    <view class='playlist'>
+      <!-- 主题 -->
+      <view class='playlist-theme'>
+        <block wx:for="{{['100天 碎碎念','音乐 阳光房','城市 新民谣']}}" wx:key="unique">
+          <view class='playlist-theme-item playlist-theme-bg{{index+1}}' bindtap='navigateToTheme' data-themeid="{{index+1}}">
+            <view class='radio icon-play theme-icon'></view>
+            <view class='theme-title'>{{item}}</view>
+          </view>
+        </block>
+      </view>
+
+      <!-- 最近更新 -->
+      <view class='playlist-list'>
+        <view class='playlist-header'>
+          <view class='radio icon-updatelist icon'></view>
+          <view class='title'>最近更新</view>
+        </view>
+        <block wx:for="{{NewUpdateList}}" wx:key="unique">
+          <view class='playlist-content' bindtap='navigateToPlayView' data-currentid="{{item.id}}" data-currentlist="{{NewUpdateList}}" data-index="{{index}}">
+            <view class='title'>{{item.audio_title}}</view>
+            <view class='icon-group'>
+              <view class='radio icon-clock icon-small'></view>
+              <view class='subtitle'>{{item.release_date}}</view>
+            </view>
+          </view>
+        </block>
+
+
+      </view>
+      <!-- 收藏排行 -->
+      <view class='playlist-list'>
+        <view class='playlist-header'>
+          <view class='radio icon-collectionlist icon'></view>
+          <view class='title'>收藏排行</view>
+        </view>
+
+        <block wx:for="{{CollectionList}}" wx:key="unique">
+          <view class='playlist-content' bindtap='navigateToPlayView' data-currentid="{{item.id}}" data-currentlist="{{CollectionList}}" data-index="{{index}}">
+            <view class='title'>{{item.audio_title}}</view>
+            <view class='icon-group'>
+              <view class='radio icon-collection icon-small'></view>
+              <view class='subtitle'>{{item.collection_number}}</view>
+            </view>
+          </view>
+        </block>
+      </view>
+      <!-- 评论排行 -->
+      <view class='playlist-list'>
+        <view class='playlist-header'>
+          <view class='radio icon-commentlist icon'></view>
+          <view class='title'>评论排行</view>
+        </view>
+
+        <block wx:for="{{ShareList}}" wx:key="unique">
+          <view class='playlist-content' bindtap='navigateToPlayView' data-currentid="{{item.id}}" data-currentlist="{{ShareList}}" data-index="{{index}}">
+            <view class='title'>{{item.audio_title}}</view>
+            <view class='icon-group'>
+              <view class='radio icon-comment icon-small'></view>
+              <view class='subtitle'>{{item.comment_number}}</view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </swiper-item>
+  <swiper-item>
+    <!-- 播放器 -->
+    <view class="player">
+      <!-- 播放器封面 -->
+      <view class='player-img'>
+        <image mode='aspectFit' class="img-animation" src='{{currentPlay.img_url}}' style="{{playing?'animation-play-state: running;':'animation-play-state: paused;'}}"></image>
+        <view class='player-img-playNumber'>
+          <image mode='aspectFit' src="{{playing?'../../res/imgs/player-play.gif':'../../res/imgs/player-stop.png'}}"></image>
+          <view class='text'>{{currentPlay.play_number}}</view>
+        </view>
+      </view>
+      <!-- 播放器分享组件 -->
+      <view class='player-component'>
+        <view class='player-component-item player-component-collection' bindtap='isCollectionChange'>
+          <view class="radio {{isCollection?'icon-collection-red scale':'icon-collection'}}"></view>
+          <!-- <view class='player-component-collection-number title'>{{currentPlay.collection_number}}</view> -->
+        </view>
+        <view class='.player-component-article player-component-item' bindtap='navigateToArticle' data-wxurl="{{currentPlay.wxurl}}">
+          <view class='radio icon-article'></view>
+          <view class='article-redpoint'></view>
+        </view>
+        <view class='player-component-comment player-component-item' bindtap='navigateToComment'>
+          <view class='radio icon-comment'></view>
+          <view class='player-component-comment-number title'>{{currentPlay.comment_number}}</view>
+        </view>
+        <view class='radio icon-share player-component-item' bindtap='navigateToShare'></view>
+      </view>
+      <!-- 播放器内容 -->
+      <view class='player-content'>
+        <view class='player-content-item player-content-title title'>{{currentPlay.audio_title}}</view>
+        <view class='player-content-item player-content-subtitle subtitle'>主播：纪夏</view>
+        <view class='player-content-item player-content-subtitle subtitle'>公众号：纪夏</view>
+      </view>
+      <!-- slider -->
+      <view class='player-slider'>
+        <view class='player-slider-currentTime subtitle'>{{currentTime}}</view>
+        <slider class='slider' max="10000" value='{{progress}}' activeColor="#555555" backgroundColor="#c5c5c5" block-size="18" bindchange="changeprogress"></slider>
+        <view class='player-slider-allTime subtitle'>{{duration}}</view>
+      </view>
+      <!-- 播放控件 -->
+      <view class='player-control'>
+        <view class='player-control-item radio icon-previous previous' bindtap='onPrev'></view>
+        <view class="player-control-item radio {{playing?'icon-pause':'icon-play'}} play" bindtap='changePlayerStatus'></view>
+        <view class='player-control-item radio icon-next next' bindtap='onNext'></view>
+      </view>
+    </view>
+  </swiper-item>
+  <swiper-item>
+    <!-- 个人中心 -->
+    <view class='person'>
+      <!-- 头像 -->
+      <view wx:if="{{!hasUserInfo && canIUse}}" class='person-img'>
+        <button size='mini' plain='false' open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击登录 </button>
+      </view>
+      <view wx:else class='person-img'>
+        <image mode='aspectFit' src="{{userInfo.avatarUrl}}"></image>
+        <view class='nickname title'>{{userInfo.nickName}}</view>
+      </view>
+      <!-- 我的欣赏 -->
+      <view class='person-collection'>
+        <view class='text title'>我的收藏：</view>
+
+        <block wx:if="{{hasUserInfo}}">
+          <block wx:for="{{userCollection}}" wx:key="unique">
+            <view class='collectionList'>
+              <view class='radio icon-collection-red icon' bindtap='deleteCollection' data-index='{{index}}'></view>
+              <view class='title text' bindtap='navigateToPlayView' data-currentid='{{item.id}}' data-currentlist="{{userCollection}}" data-index="{{index}}">{{item.audio_title}}</view>
+            </view>
+          </block>
+        </block>
+        <block wx:else>
+          <view class='collectionList'>
+            <view class='title text'>请登录查看</view>
+          </view>
+        </block>
+
+        <!-- 加载更多 -->
+        <view class='radio icon-more icon'></view>
+      </view>
+
+      <!-- 我的评论 -->
+      <view class='person-comment'>
+        <view class='title text'>我的评论：</view>
+        <view class='subtitle'>暂未开放，尽请期待</view>
+
+      </view>
+    </view>
+  </swiper-item>
+</swiper>

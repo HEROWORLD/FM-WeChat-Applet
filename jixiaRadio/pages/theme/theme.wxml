@@ -1,0 +1,32 @@
+<!--pages/theme/theme.wxml-->
+<view class='container'>
+  <swiper bindchange='changeSwiper' indicator-dots="true" class='swiper' current="{{themeList.id-1}}" circular="false">
+    <block wx:for="{{themeTopicImg}}" wx:key="unique">
+      <swiper-item>
+        <image mode='aspectFit' src='{{item.top_img_url}}'></image>
+      </swiper-item>
+    </block>
+  </swiper>
+
+  <view class='details'>
+    <view class='details-content'>
+      <block wx:for="{{themeList.theme}}" wx:key="unique">
+        <view class='details-content-item' bindtap='navigateToPlayer' data-id='{{item.id}}' data-index="{{index}}">
+          <image src='{{item.img_url}}'></image>
+          <view class='title'>{{item.audio_title}}</view>
+          <view class='radio icon-clock icon'></view>
+          <view class='time'>{{item.release_date}}</view>
+        </view>
+      </block>
+    </view>
+    <view class='load-more' bindtap='loadMoreData' data-id="{{themeList.id}}">
+      <view class='radio icon-morelist icon'></view>
+      <view class='text'>加载更多...</view>
+    </view>
+
+
+
+
+  </view>
+
+</view>

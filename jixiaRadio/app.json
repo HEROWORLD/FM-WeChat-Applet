@@ -1,0 +1,18 @@
+{
+  "pages":[
+    "pages/player/player",
+    "pages/theme/theme",
+    "pages/article/article",
+    "pages/index/index"
+    
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#f5f5f5",
+    "navigationBarTitleText": "纪夏电台",
+    "navigationBarTextStyle":"black"
+  },
+  "requiredBackgroundModes": [
+    "audio"
+  ]
+}
